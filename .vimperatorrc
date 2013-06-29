@@ -1,0 +1,53 @@
+"==============================================================================
+
+" .vimperatorrc for root dir
+
+"==============================================================================
+
+" リリースチャンネル毎にプロファイルを分け
+" AuroraではDevプロファイルも作りvimp設定ファイルも分ける
+
+" ~/.vimperator
+"  ├── caisui-vimperator            @ git submodule
+"  │   └── plugin
+"  ├── colors
+"  ├── info
+"  │   ├── Aurora
+"  │   ├── Beta
+"  │   ├── DevAurora
+"  │   ├── Release
+"  ├── plugin
+"  ├── rc-default
+"  │   ├── vimperator-main.vimp
+"  │   ├── vimperator-plugins.vimp
+"  │   ├── vimperator-styles.vimp
+"  │   └── vimperator.js
+"  ├── rc-dev
+"  │   ├── vimperator-main.vimp
+"  │   ├── vimperator-plugins.vimp
+"  │   ├── vimperator-styles.vimp
+"  │   └── vimperator.js
+"  ├── vimpr-colors                 @ git submodule
+"  ├── vimpr-plugins                @ git submodule
+"  └── vimpr-rc                     @ git submodule
+"
+" 31 directories, 437 files
+
+js << EOM
+    let rcFiles  = [
+        'vimperator-main.vimp',
+        'vimperator-plugins.vimp',
+        'vimperator-styles.vimp',
+        'vimperator.js'
+        ];
+
+    if (liberator.profileName == 'DevAurora') {
+        rc_files_dir = '~/.vimperator/rc-dev/';
+    } else {
+        rc_files_dir = '~/.vimperator/rc-default/';
+    };
+
+    for ( var i = 0; i < rcFiles.length; i ++) {
+        io.source(rc_files_dir + rcFiles[i], false);
+    }
+EOM

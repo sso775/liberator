@@ -1,0 +1,12 @@
+[submodule ".vimperator/vimpr-rc"]
+	path = .vimperator/vimpr-rc
+	url = git://github.com/vimpr/vimperator-rc.git
+[submodule ".vimperator/vimpr-plugins"]
+	path = .vimperator/vimpr-plugins
+	url = git://github.com/vimpr/vimperator-plugins.git
+[submodule ".vimperator/vimpr-colors"]
+	path = .vimperator/vimpr-colors
+	url = git://github.com/vimpr/vimperator-colors.git
+[submodule ".vimperator/caisui-vimperator"]
+	path = .vimperator/caisui-vimperator
+	url = git://github.com/caisui/vimperator.git

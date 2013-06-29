@@ -1,0 +1,216 @@
+" 基本設定 general config
+"==============================================================================
+
+" メニュー・ツールバー表示
+set gui=noaddons,nobookmarks,nomenu,nonavigation,tabs,nodelicious,statuslinetoolbar
+
+" カラースキーム
+colorscheme sweets_dita
+
+" ヒントをアルファベットに
+set hintchars=ifjklasdweuocvbnm
+
+" キャレットの表示スタイル
+set! ui.caretWidth=8
+
+" sで検索プラグインリスト補完+プラグイン自体の補完機能
+" lで履歴やブックマークからの補完
+" tで開いているタブから補完
+" http://d.hatena.ne.jp/blooo/20100122/1264133472
+set complete=sl
+
+" 検索語句を強調表示
+set hlsearch
+
+" ビープ音無効・ビジュアルレベル使用
+set visualbell
+hi Bell opacity: .5;
+
+" 検索で大文字小文字を無視
+set ignorecase
+
+" 自動入力欄フォーカスを無効化
+set focuscontent
+
+" エディタをMacVim-KaoriYaに(mvimスクリプトをダウンロードして使う
+set editor='~/bin/mvim -f'
+
+" autocmd VimperatorEnter .* <args> を lazy コマンドとして登録
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+
+
+" キーマップ Key Mapping
+"==============================================================================
+" mapname   normal  visual  ???     insert  commandline
+" noremap   o       o       o       x       x
+" noremap!  x       x       x       o       o
+" nnoremap  o       x       x       x       x
+" vnoremap  x       o       x       x       x
+" onoremap  x       x       o       x       x
+" inoremap  x       x       x       o       x
+" cnoremap  x       x       x       x       o
+"------------------------------------------------------------------------------
+
+" Leaderキー明示
+let mapleader=','
+
+" vimに合わせる
+" map <C-[> <Esc>
+" inoremap <C-[> <Esc>
+" vnoremap <C-[> <Esc>
+" cnoremap <C-[> <Esc>
+
+" j,k
+noremap j 3j
+noremap k 3k
+noremap <C-j> 3j
+noremap <C-k> 3k
+
+" C-n,C-pでj,kスクロール
+noremap <C-n> 3<C-e>
+noremap <C-p> 3<C-y>
+
+" J/Kでタブ移動
+noremap K gT
+noremap J gt
+
+" H/Lで履歴移動
+noremap H <A-Left>
+noremap L <A-Right>
+
+" 閉じたタブ履歴から補完
+noremap <Leader>u :undo<Space>
+
+" US配列キーボード用
+noremap ; :
+noremap : ;
+
+" Shift + Control + j,k でタブ位置変更
+" KeyRemap4Macとの併用設定
+map <S-Up> :tabmove! -1<CR>
+map <S-Down> :tabmove! +1<CR>
+
+" BackSpaceで戻るを無効化
+map <BS> <Nop>
+
+" Google検索
+noremap <Leader>g :open<space>google<space>
+noremap <Leader>G :tabopen<space>google<space>
+
+" ブックマーク・検索プラグインから開く
+" http://memo.officebrook.net/20090325.html
+com! -complete=bookmark -nargs=+ ob :t <args>
+com! -complete=search -nargs=+ os :t <args>
+noremap <Leader>b :ob<space>
+noremap <Leader>s :os<space>
+
+" ヴィジュアルモードで選択した文字列を新しいタブでGoogle検索
+vnoremap <silent> G y<Esc><Esc>:os<space>google<space><M-v><CR>
+
+" ⇧shift+;のテキストズームを無効化
+map + <Nop>
+
+" ソースを表示するキーを無効化
+map gf <Nop>
+
+" ブックマーク追加キー無効化
+map A <Nop>
+
+" ヴィジュアルモードのカーソル上下移動もj,k
+vnoremap j <Down>
+vnoremap k <Up>
+
+" ページエンコーディング変更
+nnoremap <Leader>es :set encoding=Shift_JIS<CR>
+nnoremap <Leader>ec :set encoding=EUC-JP<CR>
+nnoremap <Leader>eu :set encoding=UTF-8<CR>
+nnoremap <Leader>ei :set encoding=ISO-2022-JP<CR>
+
+" 画像の場合の拡大縮小
+nnoremap -urls '\.(jpg|png|gif)$' zi zI
+nnoremap -urls '\.(jpg|png|gif)$' zo zO
+
+" アドオンClearlyトグル
+nnoremap <Leader>r :js __readable_by_evernote.readable_by_evernote__menu__call(buffer.URL)<CR>
+
+
+"------------------------------------------------------------------------------
+
+" qmarks
+" gom,gorのようにgoに続けて入力・新規タブで開くにはgn
+
+" qmarks追加キーMを無効化
+noremap M <Nop>
+
+" 任意設定
+qmark m https://mail.google.com/
+qmark r https://www.google.com/reader/view/
+qmark d http://delicious.com/dita_ss_69
+qmark b http://idita.blog11.fc2.com/
+qmark a http://blog.fc2.com/
+qmark f http://friendfeed.com/
+qmark t http://www.tumblr.com/
+qmark p http://plus.google.com/
+
+
+"------------------------------------------------------------------------------
+
+cabbrev -j TITLE buffer.title
+cabbrev -j URL buffer.URI
+cabbrev -j TU buffer.title + ' ' + buffer.URL
+cabbrev -j bitly userContext.bitly()
+cabbrev vimpdir ~/local/liberator/.vimperator/
+
+cabbrev CcGreasemoneky Cc['@greasemonkey.mozdev.org/greasemonkey-service;1']
+cabbrev CcTombloo Cc['@brasil.to/tombloo-service;1']
+cabbrev CcTomblooService Cc['@brasil.to/tombloo-service;1'].getService().wrappedJSObject.Tombloo.Service
+
+" Firefox 環境設定 about config
+"==============================================================================
+
+" ダウンロードウィンドウを完了後自動で閉じる
+" set! browser.download.manager.closeWhenDone=true
+
+" ダウンロードマネージャ非表示
+set! browser.download.manager.showWhenStarting=false
+
+" ダウンロード履歴をFirefox終了時に削除
+set! browser.download.manager.retention=1
+
+" キャッシュをHDDからRAMに
+set! browser.cache.disk.enable=false
+set! browser.cache.memory.enable=true
+" 単位(KB)
+set! browser.cache.memory.capacity=-1
+
+" ファイルダウンロード完了時のウイルススキャン機能オフ
+set! browser.download.manager.scanWhenDone=false
+
+" リンクURL・ステータス表示感度
+set! browser.overlink-delay=0
+
+" アドオンインストール時の待ち時間カット
+set! security.dialog_enable_delay=0
+
+" ページのアクセスキー無効化
+set! ui.key.generalAccessKey=0
+
+" JavaScriptでのウィンドウ移動・リサイズ拒否
+set! dom.disable_window_move_resize=true
+
+" JavaScriptのステータスバー操作を無効化
+set! dom.event.contextmenu.enabled=false
+
+" 画像の多いタブを閉じた時にすぐにメモリ使用量を減らす
+" http://space.geocities.yahoo.co.jp/gl/alice0775/view/20110416/1302920985
+set! image.mem.min_discard_timeout_ms=6000
+
+" 新規タブをバックグラウンドで
+set! browser.tabs.loadDivertedInBackground=true
+
+" Greasemonkeyのローカルファイルへの動作
+set! greasemonkey.fileIsGreaseable=true
+set! greasemonkey.aboutIsGreaseable=true
+
+
+echo 'vimperator-main.vimp for dev has loaded'

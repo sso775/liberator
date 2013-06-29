@@ -1,0 +1,14 @@
+"==============================================================================
+
+" vimperator style commands
+
+"==============================================================================
+
+" ex mode時IMEをOFF
+style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
+
+" set tabnumber 問題修正
+" http://d.hatena.ne.jp/tlync/20110406/1302016465
+" style -name fix-tabnumbers chrome://* #TabsToolbar { counter-reset: tabnumber !important; }
+
+echo 'vimperator-styles.vimp for dev has loaded'

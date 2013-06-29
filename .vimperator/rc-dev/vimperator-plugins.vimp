@@ -1,0 +1,183 @@
+"==============================================================================
+
+" vimperator plugins config
+
+"==============================================================================
+
+" plugin_loader.js
+js <<EOM
+liberator.globalVariables.plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimpr-plugins/ ~/.vimperator/caisui-vimperator/plugin/";
+liberator.globalVariables.plugin_loader_plugins = [
+
+  '_libly',
+  'auto_reload',
+  'auto_source',
+  'auto-focus-frame',
+  'bitly',
+  'caret-hint',
+  'command_menu',
+  'commandBookmarklet',
+  'copy',
+  'feeder',
+  'feedSomeKeys_3',
+  'hatenaStar',
+  'hint-tombloo',
+  'imageextender',
+  'ime_controller',
+  'inspector',
+  'ldrize_cooperation',
+  'memo',
+  'migemo_completion',
+  'migemo_hint',
+  'migemo-find',
+  'multi_requester',
+  'opener',
+  'proxy',
+  'readitlater',
+  'refe',
+  'sbmcommentsviewer',
+  'statusline-toolbar',
+  'tab-history',
+  'tombloo',
+  'x-hint',
+
+  'grep',
+  'liberator-overlay-ext',
+  'piyo-ui',
+  'toolbar-manager',
+  'treeStyleTab',
+
+  'tombloo-cl'
+
+];
+EOM
+
+
+" caret_hint.js
+" 各キーに空白文字を割り当てれば無効に
+let g:caret_hint_key = 'i'
+let g:caret_hint_tail_key = 'C'
+let g:caret_hint_select_key = ''
+let g:caret_hint_select_tail_key = ''
+let g:caret_hint_swap_key = 'c'
+
+
+" copy.js
+js <<EOM
+liberator.globalVariables.copy_templates = [
+  { label: 'titleAndURL',    value : '%TITLE%\n%URL%' },
+  { label: 'title',          value : '%TITLE%' },
+  { label: 'linktag',        value : '<a href="%URL%">%TITLE%</a>' },
+  { label: 'linktagblank',   value : '<a href="%URL%" target="_blank">%TITLE%</a>' },
+  { label: 'markdown',       value : '[%TITLE%](%URL% "%TITLE%")' },
+  { label: 'blockquote', value : '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' }
+];
+EOM
+nnoremap <Leader>cy :copy<Space>titleAndURL<CR>
+nnoremap <Leader>ct :copy<Space>linktag<CR>
+nnoremap <Leader>cT :copy<Space>linktagblank<CR>
+nnoremap <Leader>cm :copy<Space>markdown<CR>
+
+
+" feedSomekeys_3.js
+
+" Gmail
+lazy fmaps -u='mail\.google\.com/mail' -frame=4 -events=vkeydown,keypress,vkeyup j k . /
+lazy fmaps -u='mail\.google\.com/mail' -frame=4 c n p o u x s r a ? * gi gs gt gd ga gc gl I
+lazy fmaps -u='mail\.google\.com/mail' -frame=4 -p=<Leader> d,# s,! e
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' -frame=4 c j,n k,p n,j p,k o u x s r  a ? * gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' -frame=4 -p=<Leader> d,# s,! e
+
+" Google Reader
+" z キーは googlereaderfullfeed.user.js
+" http://mattn.kaoriya.net/software/firefox/greasemonkey/20080225184928.htm
+lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n o p m s v A r S N P X O gh ga gs gt gu u / ?
+lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeyup z
+
+" Tumblr
+" minibuffer.user.js + tumbrlife.user.js
+" ldrize.user.js で *.tumblr.com を exclude
+lazy fmaps -u='^http://[^\./]*\.tumblr\.com' -events=vkeydown j k l r q w e
+
+" RememberTheMilk
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c t ? d F,f G,g S,s L,l Y,y H,h M,m &lt;Del> &lt;C-S-Left> &lt;C-S-Right>
+
+" Hatena Bookmark
+lazy fmaps -u='^http://b\.hatena\.ne\.jp/(?!(entry|articles|guide))' j k o,oj e a,b
+
+" Twitter
+lazy fmaps -u='^http://twitter\.com/' j k l ? / .
+lazy fmaps -u='^http://twitter\.com/' -events=vkeydown f r t m n gh gc ga gr gd gp gf gl gm gu sp
+
+" Bitbucket
+lazy fmaps -u='^https://bitbucket\.org/' -events=vkeydown cr ir gd ga gi ge ro rd rq rp rs rc rw ri ra / u
+
+" Undersky
+lazy fmaps -u='^http://undersky\.mitukiii\.jp/' -events=vkeydown j/ k/ l c
+
+
+" ime_controller.js
+let g:ex_ime_mode = "inactive"
+let g:textarea_ime_mode = "inactive"
+
+
+" ldrize_cooperation.js
+let g:ldrc_captureMappings = "['j','k','p','o']"
+let g:ldrc_intelligence_bind="true"
+let g:ldrc_skip = "0"
+map S :toggleldrc<CR>
+
+
+" liberator-overlay-ext.js
+lazy set overlayanimation
+lazy js mappings.addUserMap([modes.COMMAND_LINE], ["<C-t>"], "", function () plugins.liberatorOverlayExt.toggleShowBackground());
+
+
+" multi_requester.js
+nnoremap ma :mr alc<Space>
+nnoremap mt :mr googletrans-ja<Space>
+nnoremap mT :mr googletrans-ja<CR>
+
+
+" proxy.js
+" lazy proxy polipo
+
+
+" readitlater.js
+let g:readitlater_open_as_read = 1
+
+
+" sbmcommentsviewer.js
+let g:def_sbm_format = "id,tags,comment,timestamp"
+let g:def_sbms = "h"
+map sbm :viewSBMComments
+
+
+" slideshare.js
+nnoremap -urls=www\\.slideshare\\.net l :slideshare next<CR>
+nnoremap -urls=www\\.slideshare\\.net h :slideshare prev<CR>
+
+
+" statusline-toolbar.js
+set statuslinetoolbars=unified-back-forward-button,urlbar-container,feed-button,readability-toolbar-read
+
+
+" tab-history.js
+nnoremap < :tabh back<CR>
+nnoremap > :tabh forward<CR>
+" nnoremap d :quit<CR>:tabh back<CR>
+" nnoremap D :quit<CR>
+
+
+" tombloo.js
+noremap <C-b> :tombloo Link
+noremap B     :tombloo!Link
+noremap TQ    :tombloo Quote
+noremap TP    :tombloo Photo
+
+
+" x-hint.js
+nnoremap -u='^http://www\.tumblr\.com/(dashboard|tumblelog|show)' F :xh t //*[@class="quote_source"]//a[not(@class="tumblr_blog")]|//*[@class="caption"]//a[not(@class="tumblr_blog")]<CR>
+
+
+echo 'vimperator-plugins.vimp for dev has loaded'

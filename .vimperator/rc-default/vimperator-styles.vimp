@@ -1,0 +1,93 @@
+"==============================================================================
+
+" vimperator style commands
+
+"==============================================================================
+
+" ex mode時IMEをOFF
+style -name commandline-ime chrome://* #liberator-commandline-command input { ime-mode: inactive; }
+
+" dolipoがブロックした要素を消す
+style -name ad-hide * .fast-hidden { display: none; }
+
+" タブ追加ボタン消す
+" http://fifnel.com/2009/03/15/2278/
+style -name simple_tabs_container chrome://* <<EOM
+  .tabs-newtab-button {display: none !important;}
+  .tabs-container> stack {display: none;}
+EOM
+
+" Twitter
+" style -name twitter-hide-ad twitter.com <<EOM
+"   #j_ad {
+"     display: none !important;
+"   }
+"   .tweet p a {
+"     color: #0084B4 !important;
+"   }
+" EOM
+" styledisable -name twitter-hide-ad
+" lazy styletoggle -name twitter-hide-ad
+"
+" style -name twitter-custom-style http://twitter.com/,http://twitter.com/#!/,https://twitter.com/,https://twitter.com/#!/ <<EOM
+"   .dashboard div:nth-child(4) {
+"     display: none !important;
+"   }
+" EOM
+" styledisable -name twitter-custom-style
+" lazy styletoggle -name twitter-custom-style
+" nnoremap <Leader>cs :styletoggle -name twitter-custom-style<CR>
+
+" 安全なTumblr
+style -name tumblr-businessstyle tumblr.com <<EOM
+  .image {
+    opacity: 1;
+    width: 25% !important;
+    height: 25% !important;
+  }
+  img[src*="media.tumblr.com"] {
+    opacity: .3;
+    max-width: 150px !important;
+    max-height: 150px !important;
+  }
+  object embed {
+    max-width: 150px !important;
+    max-height: 150px !important;
+  }
+  .photo .photo_loading {
+    background-image: none !important;
+  }
+EOM
+styledisable -name tumblr-businessstyle
+nnoremap <Leader>st :styletoggle -name tumblr-businessstyle<CR>
+
+" Google+ Custom Layout
+" style -name gplus-custom-layout https://plus.google.com/,https://plus.google.com/stream/*,https://plus.google.com/sparks/* <<EOM
+"   #contentPane + div, #contentPane > div > div:nth-child(3) {
+"     display: none !important;
+"   }
+"   #contentPane, #contentPane > div > div:nth-child(5), .jr {
+"     width: 769px !important;
+"   }
+"   #contentPane > div > div:nth-child(2) {
+"     width: 727px !important;
+"   }
+"   div[class$=Lj] {
+"     border: 2px;
+"   }
+" EOM
+" styledisable -name gplus-custom-layout
+" lazy styletoggle -name gplus-custom-layout
+" nnoremap -urls 'plus\.google\.com' <Leader>cl :styletoggle -name gplus-custom-layout<CR>
+
+" set tabnumber 問題修正
+" http://d.hatena.ne.jp/tlync/20110406/1302016465
+" style -name fix-tabnumbers chrome://* #TabsToolbar { counter-reset: tabnumber !important; }
+
+js <<EOM
+if(!liberator.globalVariables.rc_styles_loaded){
+  liberator.globalVariables.rc_styles_loaded = true;
+};
+EOM
+
+echo 'vimperator-styles.vimp has loaded'

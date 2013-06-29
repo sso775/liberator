@@ -1,0 +1,212 @@
+"==============================================================================
+
+" vimperator plugins config
+
+"==============================================================================
+
+" plugin_loader.js
+js <<EOM
+liberator.globalVariables.plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimpr-plugins/ ~/.vimperator/caisui-vimperator/plugin/";
+liberator.globalVariables.plugin_loader_plugins = [
+
+  '_libly',
+  'auto_reload',
+  'auto_source',
+  'auto-focus-frame',
+  'bitly',
+  'caret-hint',
+  'copy',
+  'feedSomeKeys_3',
+  'gmail-commando',
+  'hints-for-embedded',
+  'hint-tombloo',
+  'ime_controller',
+  'migemo_completion',
+  'migemo-find',
+  'multi_requester',
+  'readitlater',
+  'sbmcommentsviewer',
+  'slideshare',
+  'statusline-toolbar',
+  'statstat',
+  'stella',
+  'tab-history',
+  'tombloo',
+  'twittperator',
+  'walk-input',
+  'x-hint'
+
+//   'coffee-script',
+//   'statusline-ssl'
+
+];
+EOM
+
+
+" caret_hint.js
+" 各キーに空白文字を割り当てれば無効に
+let g:caret_hint_key = 'i'
+let g:caret_hint_tail_key = 'C'
+let g:caret_hint_select_key = ''
+let g:caret_hint_select_tail_key = ''
+let g:caret_hint_swap_key = 'c'
+
+
+" copy.js
+js <<EOM
+liberator.globalVariables.copy_templates = [
+  { label: 'titleAndURL',    value : '%TITLE%\n%URL%' },
+  { label: 'title',          value : '%TITLE%' },
+  { label: 'linktag',        value : '<a href="%URL%">%TITLE%</a>' },
+  { label: 'linktagblank',   value : '<a href="%URL%" target="_blank">%TITLE%</a>' },
+  { label: 'markdown',       value : '[%TITLE%](%URL% "%TITLE%")' },
+  { label: 'blockquote', value : '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' }
+];
+EOM
+nnoremap <Leader>cy :copy<Space>titleAndURL<CR>
+nnoremap <Leader>ct :copy<Space>linktag<CR>
+nnoremap <Leader>cT :copy<Space>linktagblank<CR>
+nnoremap <Leader>cm :copy<Space>markdown<CR>
+
+
+" feedSomekeys_3.js
+"
+" Gmail
+lazy fmaps -u='^https?://mail\.google\.com/(mail|a)/' c j k n p o u e x s r a # [ ] z ? gi gs gt gd ga gc
+
+" Tumblr
+" tumblr_tornado.user.js
+lazy fmaps -u='^http://[^\./]*\.tumblr\.com' -events=vkeydown j J k K r l g t p q
+
+" Twitter
+" lazy fmaps -u='^https?://twitter\.com/' j k l ? / .
+lazy fmaps -u='^https?://twitter\.com/' -events=vkeydown j k l ? / . f r t m n gh gc ga gr gd gp gf gl gm gu sp
+
+" Bitbucket
+lazy fmaps -u='^https://bitbucket\.org/' -events=vkeydown cr ir gd ga gi ge ro rd rq rp rs rc rw ri ra / u
+
+" Undersky
+lazy fmaps -u='^http://undersky\.mitukiii\.jp/' -events=vkeydown j/ k/ l c
+
+" hints-for-embedded.js
+let use_hintchars_ex=2
+let g:hints_for_embedded_mode="e"
+
+
+" ime_controller.js
+let g:ex_ime_mode = "inactive"
+let g:textarea_ime_mode = "inactive"
+
+
+" multi_requester.js
+nnoremap ma :mr alc<Space>
+nnoremap mt :mr googletrans-ja<Space>
+nnoremap mT :mr googletrans-ja<CR>
+
+
+" readitlater.js
+let g:readitlater_open_as_read = 1
+
+
+" sbmcommentsviewer.js
+let g:def_sbm_format = "id,tags,comment,timestamp"
+let g:def_sbms = "h"
+map sbm :viewSBMComments
+
+
+" slideshare.js
+nnoremap -urls=www\\.slideshare\\.net l :slideshare next<CR>
+nnoremap -urls=www\\.slideshare\\.net h :slideshare prev<CR>
+
+
+" statstat.js
+let g:statstat_expression = "let ([,,,as]=commands.parseCommand(commandline.command)) as.length"
+let g:statstat_autorun = "true"
+let g:statstat_interval = "400"
+
+" statusline-toolbar.js
+statuslinetoolbars=unified-back-forward-button,urlbar-container,feed-button,readability-toolbar-read
+
+" stella.js
+js <<EOM
+function addLocalMappings(buffer, maps) {
+  maps.forEach(
+    function (map) {
+      let [cmd, action, extra] = map;
+      let actionFunc = action;
+      extra || (extra = {});
+
+      if (typeof action == "string") {
+        if (action.charAt(0) == ':')
+          actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+                                  : function () liberator.execute(action);
+        else
+          actionFunc = function () events.feedkeys(action, extra.noremap, true);
+      }
+      extra.matchingUrls = buffer;
+      mappings.addUserMap(
+        [modes.NORMAL],
+        [cmd],
+        "Local mapping for " + buffer,
+        actionFunc,
+        extra
+      );
+    }
+  );
+}
+addLocalMappings(
+  /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+  [
+    ['<C-g>', ':pageinfo S', ],
+    ['p', ':stplay', ],
+    ['m', ':stmute', ],
+    ['<Leader>c', ':stcomment', ],
+    ['zz', ':stlarge', ],
+    ['r', ':strepeat', ],
+    ['+', ':stvolume! 10', ],
+    ['-', ':stvolume! -10', ],
+    ['<', ':stseek! -10', ],
+    ['>', ':stseek! 10', ],
+    ['v', ':stvolume ', {open: true}],
+    ['V', ':stvolume! ', {open: true}],
+    ['o', ':strelations ', {open: true}],
+    ['O', ':strelations! ', {open: true}],
+  ]
+);
+EOM
+
+
+" tab-history.js
+nnoremap < :tabh back<CR>
+nnoremap > :tabh forward<CR>
+" nnoremap d :quit<CR>:tabh back<CR>
+" nnoremap D :quit<CR>
+
+" tombloo.js
+noremap <C-b> :tombloo Link
+noremap B     :tombloo!Link
+noremap TQ    :tombloo Quote
+noremap TP    :tombloo Photo
+
+
+" twittperator.js
+let g:twittperator_use_chirp = 1
+let g:twittperator_track_words = "vimperator,tombloo"
+let g:twittperator_screen_name = "sso775"
+let g:twittperator_plugin_add_url_completer = 1
+set complete+=T
+let g:twittperator_plugin_colorful_log_writer = 1
+let g:twittperator_plugin_echo_tweet = 1
+let g:twittperator_plugin_pong = 1
+
+" x-hint.js
+nnoremap -u='^http://www\.tumblr\.com/(dashboard|tumblelog|show)' F :xh t //*[@class="quote_source"]//a[not(@class="tumblr_blog")]|//*[@class="caption"]//a[not(@class="tumblr_blog")]<CR>
+
+
+js <<EOM
+if(!liberator.globalVariables.rc_plugin_loaded){
+  liberator.globalVariables.rc_plugin_loaded = true;
+};
+EOM
+
+echo 'vimperator-plugins.vimp has loaded'
